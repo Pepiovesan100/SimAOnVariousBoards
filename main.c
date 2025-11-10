@@ -1,9 +1,8 @@
-#include "main_jetson.h"
+#include "main.h"
 #include <stdio.h>
 #include <stdlib.h>
 
 #include "Operations.h"
-#include "QuantOperations.h"
 #include "utils.h"
 #include "time.h"
 
@@ -69,8 +68,8 @@ int main(int argc, char *argv[])
     }
     double avg_sima = sum_sima / (SIMA_COUNT * runs);
     double avg_mhsa = sum_mhsa / (SIMA_COUNT * runs);
-    printf("Average Time taken SimA: %f miliseconds over %d runs\n", avg_sima, runs);
-    printf("Average Time taken MHSA: %f miliseconds over %d runs\n", avg_mhsa, runs);
+    printf("Average Time taken SimA: %f miliseconds over %ld runs\n", avg_sima, runs);
+    printf("Average Time taken MHSA: %f miliseconds over %ld runs\n", avg_mhsa, runs);
     
     printf("Speedup SimA vs MHSA: %fx\n", avg_mhsa/avg_sima);
     

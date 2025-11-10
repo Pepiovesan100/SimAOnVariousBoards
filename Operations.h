@@ -47,30 +47,30 @@ void Mmultjki(const float * __restrict A,
                size_t EmbeddedDim,
                float * __restrict Output);
 
-void Mmultkij(const float * __restrict A,
-               const float * __restrict B,
+void Mmultkij(float * __restrict A,
+               float * __restrict B,
                size_t out_r,
                size_t out_c,
                size_t EmbeddedDim,
                float * __restrict Output);
 
-void Mmultkji(const float * __restrict A,
-               const float * __restrict B,
+void Mmultkji(float * __restrict A,
+               float * __restrict B,
                size_t out_r,
                size_t out_c,
                size_t EmbeddedDim,
                float * __restrict Output);
 
-void Mmultikj_tiled(const float * __restrict A,
-               const float * __restrict B,
+void Mmultikj_tiled(float * __restrict A,
+               float * __restrict B,
                size_t out_r,
                size_t out_c,
                size_t EmbeddedDim,
                float * __restrict Output,
 			   size_t tile);
 
-void Mmultikj_unrolled(const float * __restrict A,
-               const float * __restrict B,
+void Mmultikj_unrolled(float * __restrict A,
+               float * __restrict B,
                size_t out_r,
                size_t out_c,
                size_t EmbeddedDim,
@@ -80,11 +80,11 @@ void attention_engine(const float *query, const float *key, const float *value,
                      float *output,
 					 size_t Seq_length, size_t num_keys, size_t EmbeddedDim, size_t PDim, float sqrtDim);
 
-void simpleAttention_engine(const float *query, const float *key, const float *value,
+void simpleAttention_engine(float *query, float *key, float *value,
         float *output,
 		size_t Seq_length, size_t num_keys, size_t EmbeddedDim, size_t PDim, float sqrtDim);
 
-void multiHeadAttentionEngine(const float* input_data, const float* Wquery, const float* Wkey, const float* Wvalue,
+void multiHeadAttentionEngine(float* input_data, float* Wquery, float* Wkey, float* Wvalue,
                   float* Wout, float *output,
 				  size_t num_heads, size_t seq_length, size_t embed_dim, size_t P, float sqrtDim);
 
@@ -93,8 +93,8 @@ void fusedWeightSelfAttention(const float* input_data,
 						float* Wout, float *output,
 						size_t num_heads, size_t seq_length, size_t embed_dim, size_t P, float sqrtDim);
 
-void SimMHAttention(const float* input_data, const float* Wquery, const float* Wkey, const float* Wvalue, 
-                  float* Wout, const float* WoutBias, float *output,
+void SimMHAttention(float* input_data, float* Wquery, float* Wkey, float* Wvalue, 
+                  float* Wout, float* WoutBias, float *output,
 				  size_t num_heads, size_t seq_length, size_t embed_dim, size_t P, float sqrtDim);
 
 void DWT_Init(void);

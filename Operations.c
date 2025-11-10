@@ -12,8 +12,8 @@
 
 //----------
 void transpose(float* input, size_t rows, size_t cols, float* output){
-	for(int i = 0; i < rows; i++){
-		for(int j = 0; j < cols; j++){
+	for(size_t i = 0; i < rows; i++){
+		for(size_t j = 0; j < cols; j++){
 			output[j*rows + i] = input[i*cols + j];
 		}
 	}
@@ -22,11 +22,11 @@ void transpose(float* input, size_t rows, size_t cols, float* output){
 // Floating point row-wise softmax: input [num_rows x row_size], output [num_rows x row_size]
 void softmax_rowwise_float(const float *input, float *output, size_t num_rows, size_t row_size)
 {
-    for (int row = 0; row < num_rows; ++row)
+    for (size_t row = 0; row < num_rows; ++row)
     {
         // Find max for numerical stability
         float max_val = input[row * row_size];
-        for (int col = 1; col < row_size; ++col)
+        for (size_t col = 1; col < row_size; ++col)
         {
             float v = input[row * row_size + col];
             if (v > max_val)
@@ -35,7 +35,7 @@ void softmax_rowwise_float(const float *input, float *output, size_t num_rows, s
 
         // Compute exponentials and sum
         float sum = 0.0f;
-        for (int col = 0; col < row_size; ++col)
+        for (size_t col = 0; col < row_size; ++col)
         {
             float exp_val = expf(input[row * row_size + col] - max_val);
             output[row * row_size + col] = exp_val;
@@ -43,7 +43,7 @@ void softmax_rowwise_float(const float *input, float *output, size_t num_rows, s
         }
 
         // Normalize
-        for (int col = 0; col < row_size; ++col)
+        for (size_t col = 0; col < row_size; ++col)
         {
             output[row * row_size + col] /= sum;
         }
@@ -173,7 +173,7 @@ void Mmult_T_QKV(const float* __restrict I,
             }
 
             // Handle remainder
-            for (; k < EmbeddedDim; k++) {
+            for(; k < EmbeddedDim; k++) {
                 float a = I[baseI + k];
                 size_t idx = k * out_c + j;
                 accq += a * Wq[idx];
@@ -350,8 +350,8 @@ void Mmultjki(const float * __restrict A,
     }
 }
 
-void Mmultkij(const float * __restrict A,
-               const float * __restrict B,
+void Mmultkij(float * __restrict A,
+               float * __restrict B,
                size_t out_r,
                size_t out_c,
                size_t EmbeddedDim,
@@ -373,8 +373,8 @@ void Mmultkij(const float * __restrict A,
     }
 }
 
-void Mmultkji(const float * __restrict A,
-               const float * __restrict B,
+void Mmultkji(float * __restrict A,
+               float * __restrict B,
                size_t out_r,
                size_t out_c,
                size_t EmbeddedDim,
@@ -395,8 +395,8 @@ void Mmultkji(const float * __restrict A,
     }
 }
 
-void Mmultikj_tiled(const float * __restrict A,
-               const float * __restrict B,
+void Mmultikj_tiled(float * __restrict A,
+               float * __restrict B,
                size_t out_r,
                size_t out_c,
                size_t EmbeddedDim,
@@ -434,8 +434,8 @@ void Mmultikj_tiled(const float * __restrict A,
 }
 
 
-void Mmultikj_unrolled(const float * __restrict A,
-               const float * __restrict B,
+void Mmultikj_unrolled(float * __restrict A,
+               float * __restrict B,
                size_t out_r,
                size_t out_c,
                size_t EmbeddedDim,
@@ -538,7 +538,7 @@ void attention_engine(const float *query, const float *key, const float *value,
    Mmult(softmax_scores, value, Seq_length, PDim, Seq_length, output);
 }
 
-void simpleAttention_engine(const float *query, const float *key, const float *value,
+void simpleAttention_engine(float *query, float *key, float *value,
         float *output,
 		size_t Seq_length, size_t num_keys, size_t EmbeddedDim, size_t PDim, float sqrtDim)
 {
@@ -566,7 +566,7 @@ void simpleAttention_engine(const float *query, const float *key, const float *v
 // num_heads: number of attention heads
 // seq_length: sequence length (number of queries/keys/values per head)
 // embed_dim: embedding dimension per head
-void multiHeadAttentionEngine(const float* input_data, const float* Wquery, const float* Wkey, const float* Wvalue,
+void multiHeadAttentionEngine(float* input_data, float* Wquery, float* Wkey, float* Wvalue,
                             float* Wout, float *output, size_t num_heads, size_t seq_length, size_t embed_dim, size_t P, float sqrtDim)
 {
 	size_t embed_dim_head = P/num_heads;
@@ -653,8 +653,8 @@ void multiHeadAttentionEngine(const float* input_data, const float* Wquery, cons
 //    free(y_head);
 //}
 
-void SimMHAttention(const float* input_data, const float* Wquery, const float* Wkey, const float* Wvalue,
-                  float* Wout, const float* WoutBias, float *output,
+void SimMHAttention(float* input_data, float* Wquery, float* Wkey, float* Wvalue,
+                  float* Wout, float* WoutBias, float *output,
 				  size_t num_heads, size_t seq_length, size_t embed_dim, size_t P, float sqrtDim)
 {
 	float Q[SIMA_LEN * SIMA_EMBEDDING];
